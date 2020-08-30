@@ -1,0 +1,163 @@
+/**
+ * sekigae.shell.js
+ * sekigaeシェルモジュール 
+ */
+/*jslint          browser : true, continue : true,
+   devel  : true, indent  : 2,    maxerr   : 50,
+   newcap : true, nomen   : true, plusplus : true,
+   regexp : true, sloppy  : true, vars     : false,
+   white  : true
+ */
+/*global $, sekigae */
+
+
+'use strict';
+
+sekigae.shell = (() => {
+
+  const configMap = {
+    NINZU : 25,
+    
+    base_html : String() +
+                '<button class="sekigae-shell-input-name-btn">名前入力</button>' +
+                '<button class="sekigae-shell-print-name-btn">名前表示</button>' +
+                '<button class="sekigae-shell-shuffle-start-btn">シャッフルスタート</button>' +
+                '<button class="sekigae-shell-shuffle-end-btn">ストップ</button>' +
+                '<div class="sekigae-shell-input-name-area"></div>' +
+                '<div class="sekigae-shell-print-name-area"></div>',
+
+  }
+
+  let jqueryMap = {}
+
+  const stateMap = {
+    $container : null,
+    isShowInputNameArea : false
+  }
+
+  const setJqueryMap = () => {
+    const $container = stateMap.$container
+    
+    jqueryMap = {
+      $container : $container,
+      $input_name_btn : $container.find( '.sekigae-shell-input-name-btn' ),
+      $input_name_area : $container.find('.sekigae-shell-input-name-area')
+    }
+  }
+
+  // DOM操作
+  const setInputNameArea = () => {
+    let text = String()
+    
+    for ( let i = 0; i < configMap.NINZU; i++ ) {
+      text = text +
+             '<div>' + i + ':' + 
+             '<input type="text" name="name_' + i + '">' +
+             '</div>'
+    }
+    const input_html =
+      '<form class="sekigae-shell-input-name-form" method="get">' +
+      text +
+      '<button type="submit" class="sekigae-shell-input-name-submit-btn">中断・終了</button>' +
+      '</form>';
+
+    jqueryMap.$input_name_area.html( input_html )
+  }
+
+  const toggleInputNameArea = ( isShow ) => {
+    if ( isShow ) {
+      $('.sekigae-shell-input-name-area').css('display', 'none')
+      stateMap.isShowInputNameArea = false
+    }
+    else {
+      $('.sekigae-shell-input-name-area').css('display', 'block')
+      stateMap.isShowInputNameArea = true
+    }
+    console.log(stateMap)
+  }
+
+  // イベントハンドラ
+  const onClickInputName = () => {
+    // $('body').css('background-color', 'rgba(50, 50, 50, 0.5)')
+    // $('#wrap').css('background-color', 'rgba(70, 70, 70, 0.7)')
+    toggleInputNameArea( stateMap.isShowInputNameArea )
+    return false
+  }
+   
+  
+
+  const initModule = ( $container ) => {
+    stateMap.$container = $container
+    $container.html( configMap.base_html )
+    setJqueryMap()
+    setInputNameArea()
+    jqueryMap.$input_name_btn.click( onClickInputName )
+  }
+
+  return { initModule : initModule }
+})()
+
+/* 
+ *   const name = new Array()
+ * 
+ * 
+ *   
+ *   $('#wrap').append( base_html )
+ * 
+ * 
+ * 
+ * 
+ *   $('#input-name-area').html(input_html).addClass('disp-none')
+ * 
+ * 
+ *   const disp_name = () => {
+ *     let disp_name_html = '';
+ * 
+ *     for (let i = 0; i < NINZU; i++) {
+ *       disp_name_html =
+ *         disp_name_html +
+ *         '<div class="name">' +
+ *         name[i] +
+ *         '</div>'
+ *     }
+ *     $('#name-area').html( disp_name_html )
+ *   }
+ * 
+ *   const save_name = () => {
+ *     const setjson = JSON.stringify( name )
+ *     localStorage.setItem( 'nameJson', setjson )
+ *   }
+ * 
+ * 
+ *   $('#print-name').on('click', () => {
+ *     disp_name()
+ *   })
+ * 
+ *   $('#submit-btn').on('click', (e) => {
+ *     // console.log(e)
+ *     e.preventDefault()
+ *     for (let i = 0; i < NINZU; i++) {
+ *       const name_data = `input[name="name_${i}"]`
+ *       const name_text = $(name_data).val()
+ *       // console.log( name_text )
+ *       name.push( name_text )
+ *     }
+ *     $('#input-name-area').removeClass('disp-on')
+ *     save_name()
+ * 
+ *     // const $form = $('#input_name_form')
+ *     // const param = $form.serializeArray()
+ *     // console.log(param)
+ *   })
+ * 
+ *   $('#shuffle-end').on('click', () => {
+ *     const tmp = '<div>' +
+ *                 `${tmpname[0]}` +
+ *                 `${tmpname[1]}` +
+ *                 '</div>'
+ *                 $('#name-area').append(tmp)
+ *   })*/
+
+
+
+// 修正時刻: Sat Aug 29 06:14:27 2020

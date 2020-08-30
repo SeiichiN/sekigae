@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>sekigae</title>
+        <link rel="stylesheet" href="css/sekigae.css">
+        <link rel="stylesheet" href="css/sekigae.shell.css">
+        <link rel="stylesheet" href="css/sekigae.shell.input.name.css">
+        <link rel="stylesheet" href="css/sekigae.shell.print.name.css">
+        <link rel="stylesheet" href="css/sekigae.shell.shuffle.name.css">
+        <link rel="stylesheet" href="css/sekigae.shell.config.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/sekigae.js"></script>
+        <script src="js/sekigae.shell.js"></script>
+        <script src="js/sekigae.inputName.js"></script>
+        <script src="js/sekigae.printName.js"></script>
+        <script src="js/sekigae.shuffle.js"></script>
+        <script src="js/sekigae.config.js"></script>
+        <script>
+         $(() => { sekigae.initModule( $('#sekigae') ) } )
+        </script>
+    </head>
+    <body>
+      <header>
+        <h1>席替えプログラム</h1>
+      </header>
+      <div id="sekigae"></div>
+      <footer>
+        <small data-chaffle="en">Copyright &copy; 2020 Seiichi Nukayama</small>
+      </footer>
+      <script src="js/ext/chaffle.min.js"></script>
+      <script>
+       'use strict';
+       const elements = document.querySelectorAll("[data-chaffle]");
+       Array.prototype.forEach.call( elements, (el) => {
+         const chaffle = new Chaffle( el, {
+           delay: 100
+         });
+         chaffle.init();
+       })
+      </script>
+    </body>
+</html>
+
+
+<!-- 修正時刻: Sun Aug 30 08:15:21 2020 -->
+

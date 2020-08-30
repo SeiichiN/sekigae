@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>aaa</title>
+    <style>
+     .disp-none { display: none; }
+     .disp-on { display: block; }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="this"></div>
+    <hr>
+    <p id="print-area">text: </p>
+    <script>
+     'use strict'
+     $(() => {
+       const base_html =
+         '<button id="disp_btn">名前入力</button>';
+
+       
+       const form_html =
+         '<div id="input_name_area">' +
+         '<form method="get">' +
+         '<div class="form_data">' +
+         '<input type="text" name="textData_1" size="40">' +
+         '</div>' +
+         '<div class="form_data">' +
+         '<button type="submit" id="submit">送信</button>' +
+         '</div></form></div>';
+
+       $('#this').append( base_html );
+
+       $('#this').append( form_html );
+       $('#input_name_area').addClass('disp-none');
+
+       $('#disp_btn').on('click', () => {
+         $('#input_name_area').toggleClass("disp-on")
+       })
+       
+       $("#submit").on('click', (e) => {
+         e.preventDefault()
+         const i = 1
+         const data = `input[name="textData_${i}"]`
+         const text = $(data).val()
+         const html2 = '<span>' + text + '</span>'
+
+         $("#print-area").append( html2 )
+       })
+     });
+    </script>
+  </body>
+</html>
+
+
+<!-- 修正時刻: Fri Aug 28 05:47:18 2020 -->

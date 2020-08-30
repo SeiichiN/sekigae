@@ -1,0 +1,18 @@
+@charset "utf-8";
+
+.sekigae-shell-shuffle-name-area {
+  display: none;
+  width: 200px;
+  position: absolute;
+  left: 10%;
+  top: 0;
+  background-color: rgba(40, 40, 40, 0.8);
+  padding: 5px;
+}
+
+.sekigae-shell-shuffle-name-area .name {
+  border: solid 1px #ddd;
+  padding: 5px;
+  background-color: #fff;
+}
+

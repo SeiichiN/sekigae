@@ -1,0 +1,137 @@
+
+sekigae.html( index.html )
+==================================================================================
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>sekigae</title>
+        <link rel="stylesheet" href="css/sekigae.css">
+        <link rel="stylesheet" href="css/sekigae.shell.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/sekigae.js"></script>
+        <script src="js/sekigae.shell.js"></script>
+        <script>
+         $(() => { sekigae.initModule( $('#sekigae') ) } )
+        </script>
+    </head>
+    <body>
+        <div id="sekigae"></div>
+    </body>
+</html>
+==================================================================================
+
+
+js/sekigae.js
+==================================================================================
+const sekigae = ( () => {
+  const initModule = ($container) => {
+    sekigae.shell.initModule( $container )
+  }
+
+  return { initModule: initModule }
+})()
+==================================================================================
+
+js/sekigae.shell.js
+==================================================================================
+sekigae.shell = (() => {
+
+  const configMap = {
+    NINZU : 25,
+    
+    base_html : // 基本的な HTML を記述
+
+  }
+
+  let jqueryMap = {}
+
+  const stateMap = {
+    $container : null,
+  }
+
+  const setJqueryMap = () => {
+    const $container = stateMap.$container
+    
+    jqueryMap = {
+      $container : $container,
+      $input_name_btn : $container.find( '.sekigae-shell-input-name-btn' ),
+      $input_name_area : $container.find('.sekigae-shell-input-name-area')
+    }
+  }
+
+  // DOM操作
+
+  // イベントハンドラ
+  
+
+  const initModule = ( $container ) => {
+    stateMap.$container = $container
+    $container.html( configMap.base_html )
+    setJqueryMap()
+    sekigae.inputName.initModule( jqueryMap.$input_name_area )
+    jqueryMap.$input_name_btn.click( sekigae.inputName.onClickInputName )
+  }
+
+  return { initModule : initModule }
+})()
+==================================================================================
+
+
+
+sekigae.inputName.js
+==================================================================================
+sekigae.inputName = (() => {
+
+  const configMap = {
+    NINZU : 25,
+  }
+
+  let jqueryMap = {}
+
+  const stateMap = {
+    isShowInputNameArea : false
+  }
+
+  const setJqueryMap = () => {
+    jqueryMap = {
+      $input_name_area : null
+    }
+  }
+
+  // DOM操作
+  const setInputNameArea = () => {
+    // input_html を作成
+    jqueryMap.$input_name_area.html( input_html )
+  }
+
+  const toggleInputNameArea = ( isShow ) => {
+    //  input_name_area を表示したり消したりする
+  }       
+
+  // イベントハンドラ
+  const onClickInputName = () => {
+    toggleInputNameArea( stateMap.isShowInputNameArea )
+    return false
+  }
+   
+  
+  // $target -- $('.sekigae-shell-input-name-area')
+  const initModule = ( $target ) => {
+    setJqueryMap()
+    jqueryMap.$input_name_area = $target
+    setInputNameArea()
+    return true
+  }
+
+  // これを外部に公開
+  return {
+    initModule : initModule,
+    onClickInputName : onClickInputName
+  }
+})()
+
+
+
+
+修正時刻: Sat Aug 29 07:55:36 2020

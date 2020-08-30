@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+.sekigae-shell-config-area {
+  display: none;
+  width: 120px;
+  position: absolute;
+  left: 20%;
+  background-color: rgba( 40, 40, 40, 0.8 );
+  padding: 5px;
+}
+
+.sekigae-shell-config-area form {
+  padding: 5px;
+  background-color: #fff;
+}
+
+.sekigae-shell-config-area input {
+  width: 80px;
+}
