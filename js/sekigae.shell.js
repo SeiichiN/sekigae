@@ -144,7 +144,7 @@ sekigae.shell = (() => {
 
     // sekigae.shuffle.js
     sekigae.shuffle.initModule( jqueryMap.$shuffle_name_area )
-    jqueryMap.$shuffle_btn.on( 'click', sekigae.shuffle.onClickShuffleMode )
+    jqueryMap.$shuffle_btn.on( 'click', sekigae.shuffle.onClickShuffleArea )
     jqueryMap.$shuffle_btn.on( 'click', changeShuffleBtnText )
     sekigae.shuffle.setNINZU( configMap.NINZU )
 

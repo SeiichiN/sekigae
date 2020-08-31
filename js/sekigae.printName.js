@@ -49,19 +49,15 @@ sekigae.printName = (() => {
     // console.log("printName - setPrintNameArea")
     // console.log( stateMap.name )
     
-    let disp_name_html = String();
+    let disp_name_html = '<ol>'
     
     for (let i = 0; i < configMap.NINZU; i++) {
-      const make_html = ( () => {
-        return ( () => {
-          const text =
-            '<div class="name">' + (i+1).toString() + ": " +
-            stateMap.name[i] + '</div>';
-          return text
-        })
-      })()
-      disp_name_html = disp_name_html + make_html()
+      disp_name_html = disp_name_html +
+                       '<li class="name">' +
+                       stateMap.name[i] +
+                       '</li>';
     }
+    disp_name_html = disp_name_html + '</ol>'
     jqueryMap.$print_name_area.html( disp_name_html )
 
   }

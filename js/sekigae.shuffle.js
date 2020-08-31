@@ -17,12 +17,15 @@ sekigae.shuffle = (() => {
 
   const configMap = {
     NINZU : 25,
+    SPEED : 20
   }
 
   const stateMap = {
     $container : null,
+    showShuffleArea : false,
     isShuffle : false,
-    name : new Array()
+    name : new Array(),
+    shuffleStart : null
   }
 
   let jqueryMap = {}
@@ -31,70 +34,83 @@ sekigae.shuffle = (() => {
   
   const setJqueryMap = () => {
     jqueryMap = {
-      $shuffle_name_area : stateMap.$container
+      $shuffle_name_area : stateMap.$container,
+      $shuffle_start_btn : null,
+      $shuffle_stop_btn : null
     }
-  }
-
-  // localStorageから値を取得
-  const getName = () => {
-    const jsonName = localStorage.getItem( 'nameJson' )
-    stateMap.name = JSON.parse( jsonName )
-    // console.log( stateMap.name )
-  }
-
-  // localStorageに値を保存
-  const saveName = (name) => {
-    const setjson = JSON.stringify( name )
-    localStorage.setItem( 'nameJson', setjson )
   }
 
   // DOM操作
-  const setPrintNameArea = () => {
-    let disp_name_html = '';
-    
+  const setShuffleNameArea = () => {
+    let disp_name_html = '<ol>'
+
     for (let i = 0; i < configMap.NINZU; i++) {
-      const make_html = ( () => {
-        return ( () => {
-          const text =
-            '<div class="name" data-chaffle="ja">' + (i+1).toString() + ": " +
-            stateMap.name[i] + '</div>';
-          return text
-        })
-      })()
-      disp_name_html = disp_name_html + make_html()
+      disp_name_html = disp_name_html + '<li></li>'
     }
+    disp_name_html = disp_name_html + '</ol>' +
+                     '<button class="shuffle-start-btn">シャッフル開始</button>' +
+                     '<button class="shuffle-stop-btn">シャッフル停止</button>';
+
     jqueryMap.$shuffle_name_area.html( disp_name_html )
+    jqueryMap.$li = jqueryMap.$shuffle_name_area.find('li')
+    jqueryMap.$shuffle_start_btn = $('.shuffle-start-btn')
+    jqueryMap.$shuffle_start_btn.on( 'click', onClickShuffleStart )
+    jqueryMap.$shuffle_stop_btn = $('.shuffle-stop-btn')
+    jqueryMap.$shuffle_stop_btn.on( 'click', onClickShuffleStop )
   }
 
-  const toggleShuffleMode = ( isShuffle ) => {
-    // console.log(isShuffle)
-    if ( isShuffle ) {
+  // 上記で作成した disp_name_html の中に 名列を表示する。
+  const printName = () => {
+    for (let i = 0; i < configMap.NINZU; i++) {
+      // $('li').eq(i).text( stateMap.name[i] )
+      jqueryMap.$li.eq(i).text( stateMap.name[i] )
+      console.log( stateMap.name[i])
+    }
+  }
+  
+      
+  // showShuffleAreaが true なら 名前の表示を消して false にする。
+  // showShuffleAreaが false なら 名前を表示して true にする。
+  const toggleShuffleArea = ( showShuffleArea ) => {
+    // console.log(showShuffleArea)
+    if ( showShuffleArea ) {
+      saveName()
       jqueryMap.$shuffle_name_area.css( 'display', 'none' )
-      stateMap.isShuffle = false
+      stateMap.showShuffleArea = false
     }
     else {
       jqueryMap.$shuffle_name_area.css( 'display', 'block' )
-      stateMap.isShuffle = true
+      printName()
+      stateMap.showShuffleArea = true
     }
-    shuffleName()
   }
 
+  // 配列をシャッフルする
   const shuffleName = () => {
-    if (stateMap.isShuffle) {
-      const _name = shuffle ( stateMap.name )
-      console.log( _name )
-      saveName( _name )
-      setPrintNameArea()
-    }
+    stateMap.name = shuffle ( stateMap.name )
   }
 
-  /**
+  /***************************************************************
    * ユーティリティ
    */
   // NINZU を調整する(オプション)
   const setNINZU = ( ninzu ) => {
     configMap.NINZU = ninzu
-    setPrintNameArea()
+    setShuffleNameArea()
+  }
+
+  // localStorageから値を取得
+  const loadName = () => {
+    const jsonName = localStorage.getItem( 'nameJson' )
+    if (jsonName != null && jsonName != undefined)
+      stateMap.name = JSON.parse( jsonName )
+    // console.log( stateMap.name )
+  }
+
+  // localStorageに値を保存
+  const saveName = () => {
+    const setjson = JSON.stringify( stateMap.name )
+    localStorage.setItem( 'nameJson', setjson )
   }
 
   // 配列をシャッフルする
@@ -108,26 +124,48 @@ sekigae.shuffle = (() => {
     return array
   }
 
-  // イベントハンドラ
-  const onClickShuffleMode = (e) => {
-    toggleShuffleMode( stateMap.isShuffle )
+  /***************************************************************
+   * イベントハンドラ
+   */
+  const onClickShuffleArea = (e) => {
+    toggleShuffleArea( stateMap.showShuffleArea )
     return false
   }
 
+  const onClickShuffleStart = (e) => {
+    stateMap.isShuffle = true
+    stateMap.shuffleStart = setInterval( () => {
+      shuffleName()
+      printName()
+    }, configMap.SPEED )
+    return false
+  }
+
+  const onClickShuffleStop = (e) => {
+    stateMap.isShuffle = false
+    clearInterval( stateMap.shuffleStart )
+    printName()
+    return false
+  }
+  
+  /***************************************************************
+   * 初期設定
+   */
   const initModule = ( $target ) => {
     stateMap.$container = $target
     setJqueryMap()
-    getName()
-    setPrintNameArea()
+    loadName()
+    setShuffleNameArea()
     return true
   }
 
   return {
     initModule : initModule,
-    onClickShuffleMode : onClickShuffleMode,
+    onClickShuffleArea : onClickShuffleArea,
     setNINZU : setNINZU
   }
   
 })()
 
-// 修正時刻: Sun Aug 30 08:11:36 2020
+
+// 修正時刻: Mon Aug 31 19:05:21 2020

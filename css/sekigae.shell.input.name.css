@@ -10,6 +10,11 @@
   right: 20%;
 }
 
+.sekigae-shell-input-name-area li {
+  background-color: #fff;
+  color: #444;
+}
+
 .sekigae-shell-input-name-submit-btn {
   margin: 5px;
 }

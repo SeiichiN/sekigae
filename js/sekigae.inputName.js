@@ -34,14 +34,15 @@ sekigae.inputName = (() => {
 
   // DOM操作
   const setInputNameArea = () => {
-    let text = String()
+    let text = '<ol>'
     
     for ( let i = 0; i < configMap.NINZU; i++ ) {
       text = text +
-             '<div>' + (i+1).toString() + ':' + 
+             '<li>' + 
              '<input type="text" name="name_' + i + '">' +
-             '</div>'
+             '</li>'
     }
+    text = text + '</ol>'
     const input_html =
       '<form class="sekigae-shell-input-name-form" method="get">' +
       text +
